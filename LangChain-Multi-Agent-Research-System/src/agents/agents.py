@@ -4,11 +4,23 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from src.tools.tools import web_search, scrape_url
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
 # Model Initialization
-llm = ChatOpenAI(model = "gpt-4o-mini",temperature=0)
+llm = ChatOpenAI(
+    model="z-ai/glm-5",
+    api_key=os.environ["OPENROUTER_API_KEY"],
+    base_url="https://openrouter.ai/api/v1",
+    extra_body={
+        "reasoning": {"enabled": True},
+        "provider": {
+            "only": ["gmicloud/fp8"],
+            "allow_fallbacks": False,
+        },
+    },
+)
 
 
 # 1st Agent : Search Agent
