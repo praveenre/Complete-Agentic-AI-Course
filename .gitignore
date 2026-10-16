@@ -1,1 +1,28 @@
-LangGraph-Code/.env
+# Environments & Secrets
+.env
+**/.env
+.venv/
+**/.venv/
+
+# Python cache & build
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.class
+
+# IDE & Editor files
+.vscode/
+**/.vscode/
+
+# Stray / temp artifacts
+3.14
+nul
+
+# SQLite Databases & Vectors
+*.db
+*.db-shm
+*.db-wal
+faiss_db/
+**/faiss_db/
+desktop.ini
+**/desktop.ini

@@ -10,15 +10,11 @@ load_dotenv()
 
 # Model Initialization
 llm = ChatOpenAI(
-    model="z-ai/glm-5",
+    model="z-ai/glm-5.3-flash",
     api_key=os.environ["OPENROUTER_API_KEY"],
     base_url="https://openrouter.ai/api/v1",
     extra_body={
-        "reasoning": {"enabled": True},
-        "provider": {
-            "only": ["gmicloud/fp8"],
-            "allow_fallbacks": False,
-        },
+        "reasoning": {"enabled": True}
     },
 )
 

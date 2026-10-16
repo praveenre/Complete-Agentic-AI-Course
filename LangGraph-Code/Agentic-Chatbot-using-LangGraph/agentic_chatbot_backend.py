@@ -5,11 +5,17 @@ from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph.message import add_messages
+import os
 
 
 load_dotenv()
 
-llm = ChatOpenAI()
+llm = ChatOpenAI(
+    model="minimax/minimax-m2.7",
+    base_url="https://openrouter.ai/api/v1",
+    api_key=os.getenv("ROUTER_API_KEY"),
+    temperature=0.7,
+)
 
 
 class ChatState(TypedDict):
