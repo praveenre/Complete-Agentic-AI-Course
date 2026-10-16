@@ -1,5 +1,9 @@
 from agentic_chatbot_backend import chatbot
 from langchain_core.messages import BaseMessage, HumanMessage
+import sys
+
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8")
 
 
 

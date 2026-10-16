@@ -3,9 +3,24 @@ from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, ToolMe
 import streamlit as st
 import uuid 
 
+def get_message_text(content):
+    if isinstance(content, str):
+        return content
+    elif isinstance(content, list):
+        parts = []
+        for item in content:
+            if isinstance(item, dict) and "text" in item:
+                parts.append(item["text"])
+            elif isinstance(item, str):
+                parts.append(item)
+        return "".join(parts)
+    return str(content)
+
+
 # Generate a unique thread ID for each new conversation
 def generate_thread_id():
     return str(uuid.uuid4())
+
 
 
 
@@ -132,7 +147,7 @@ for thread_id in st.session_state["chat_threads"][::-1]:
             # Convert the LangChain message into a dictionary
             temp_messages.append({
                 "role": role,
-                "content": message.content
+                "content": get_message_text(message.content)
             })
 
 
@@ -153,7 +168,7 @@ for message in st.session_state["message_history"]:
     with st.chat_message(message["role"]):
 
         # Display the message content
-        st.text(message["content"])
+        st.text(get_message_text(message["content"]))
 
 
 
@@ -216,7 +231,15 @@ if user_input:
 
                 # Stream ONLY assistant tokens
                 if isinstance(message_chunk, AIMessage):
-                    yield message_chunk.content
+                    content = message_chunk.content
+                    if isinstance(content, list):
+                        for item in content:
+                            if isinstance(item, dict) and "text" in item and item["text"]:
+                                yield item["text"]
+                            elif isinstance(item, str) and item:
+                                yield item
+                    elif isinstance(content, str) and content:
+                        yield content
 
         ai_message = st.write_stream(ai_only_stream())
 

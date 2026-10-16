@@ -323,7 +323,15 @@ if user_input:
 
                 # Stream ONLY assistant tokens
                 if isinstance(message_chunk, AIMessage):
-                    yield message_chunk.content
+                    content = message_chunk.content
+                    if isinstance(content, list):
+                        for item in content:
+                            if isinstance(item, dict) and "text" in item and item["text"]:
+                                yield item["text"]
+                            elif isinstance(item, str) and item:
+                                yield item
+                    elif isinstance(content, str) and content:
+                        yield content
 
 
         ai_message = st.write_stream(

@@ -247,9 +247,15 @@ def resume_hitl_execution(decision):
                         message_chunk,
                         AIMessage
                     ):
-
-                        if message_chunk.content:
-                            yield message_chunk.content
+                        content = message_chunk.content
+                        if isinstance(content, list):
+                            for item in content:
+                                if isinstance(item, dict) and "text" in item and item["text"]:
+                                    yield item["text"]
+                                elif isinstance(item, str) and item:
+                                    yield item
+                        elif isinstance(content, str) and content:
+                            yield content
 
             # Display the streamed final answer
             resumed_ai_message = st.write_stream(
@@ -650,7 +656,15 @@ if user_input:
                     message_chunk,
                     AIMessage
                 ):
-                    yield message_chunk.content
+                    content = message_chunk.content
+                    if isinstance(content, list):
+                        for item in content:
+                            if isinstance(item, dict) and "text" in item and item["text"]:
+                                yield item["text"]
+                            elif isinstance(item, str) and item:
+                                yield item
+                    elif isinstance(content, str) and content:
+                        yield content
 
             # ========================= HITL ADDED =========================
 
